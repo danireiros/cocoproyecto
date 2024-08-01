@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
@@ -47,13 +45,25 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await axios.post('/api/auth/register', {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.password_confirmation
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.password_confirmation
+          })
         });
-        localStorage.setItem('token', response.data.token);
+
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
         this.$router.push('/');
       } catch (error) {
         this.error = 'Registro fallido, compruebe sus datos e intentelo de nuevo.';
@@ -62,3 +72,4 @@ export default {
   }
 };
 </script>
+

@@ -10,3 +10,9 @@ html, body {
 .min-h-screen {
     min-height: 100vh;
 }
+
+.flex-gap {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}

@@ -16,14 +16,18 @@
                 class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 Login
             </button>
+            <div class="mt-4 text-center">
+                <router-link to="/password/forgot"
+                    class="text-blue-500 hover:text-blue-700">
+                    Olvidé mi contraseña
+                </router-link>
+            </div>
             <div v-if="error" class="mt-4 text-red-600 text-sm">{{ error }}</div>
         </form>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
     data() {
         return {
@@ -35,11 +39,23 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axios.post('/api/auth/login', {
-                    email: this.email,
-                    password: this.password
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: this.email,
+                        password: this.password
+                    })
                 });
-                localStorage.setItem('token', response.data.token);
+
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
                 this.$router.push('/');
             } catch (error) {
                 this.error = 'Inicio de sesión fallido, compruebe sus datos e intentelo de nuevo.';
@@ -48,3 +64,4 @@ export default {
     }
 };
 </script>
+

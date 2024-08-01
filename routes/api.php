@@ -35,13 +35,48 @@ Route::group([
 
 Route::middleware('auth:api')->get('/auth/me', [AuthController::class, 'me']);
 
-//Email
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware(['auth', 'verified'])->name('verification.notice');
+// rutas de verificacion
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\PasswordResetController;
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('/password/email', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/password/resetform/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
+
+use App\Http\Controllers\ProjectController;
+
+/*
+Route::middleware('auth:api')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::post('/projects', [ProjectController::class, 'store']);
+    Route::get('/projects/{id}', [ProjectController::class, 'show']);
+    Route::put('/projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
+
+    Route::post('/projects/{projectId}/add-users', [ProjectController::class, 'addUsers']);
+
+    Route::get('/users', [ProjectController::class, 'fetchUsers']);
+    Route::post('/projects/{projectId}/update-role', [ProjectController::class, 'updateUserRole']);
+    Route::get('/projects/{projectId}/users', [ProjectController::class, 'fetchAddedUsers']);
+
+    Route::get('/api/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'getUserRole']);
+    Route::put('/api/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'updateUserRole']);
+
+});
+*/
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::post('/projects', [ProjectController::class, 'store']);
+    Route::get('/projects/{id}', [ProjectController::class, 'show']);
+    Route::put('/projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
+
+    Route::get('/users', [ProjectController::class, 'fetchUsers']);
+    Route::post('/projects/{projectId}/add-users', [ProjectController::class, 'addUsers']);
+    Route::get('/projects/{projectId}/users', [ProjectController::class, 'fetchAddedUsers']);
+    Route::get('/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'getUserRole']);
+    Route::put('/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'updateUserRole']);
+});
 

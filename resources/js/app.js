@@ -7,7 +7,8 @@ import router from './router';
 import App from './components/App.vue';
 import axios from 'axios';
 
-// Configurar Axios
+// Axios
+// to-do : no es necesario axios, se pide AJAX
 axios.defaults.baseURL = '';
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');

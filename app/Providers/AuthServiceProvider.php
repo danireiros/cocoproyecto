@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VerifyEmail as VerifyEmailNotification;
 use App\Models\User;
+use App\Models\Project;
+use App\Policies\ProjectPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // Register your policies here
+        Project::class => ProjectPolicy::class,
     ];
 
     /**
@@ -29,12 +31,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Configurar el correo electrónico de verificación para la notificación
         Notification::routes([
             'mail' => env('MAIL_FROM_ADDRESS'),
         ]);
 
-        // Opcional: Puedes personalizar la verificación de correo electrónico
         FacadesGate::define('verify-email', function (User $user) {
             return $user->hasVerifiedEmail();
         });
