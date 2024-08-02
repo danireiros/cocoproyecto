@@ -1,6 +1,6 @@
 <template>
     <div class="edit-user-role max-w-xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold mb-6 text-gray-900">Editar Rol de Usuario</h2>
+      <h2 class="text-2xl font-bold mb-6 text-gray-900">Editar roles de usuario</h2>
       <form @submit.prevent="updateUserRole">
         <div class="mb-4">
           <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>

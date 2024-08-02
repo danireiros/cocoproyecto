@@ -1,5 +1,5 @@
 <template>
-    <div class="project-details max-w-4xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div class="project-details max-w-4xl mx-auto mt-2 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <div v-if="project" class="edit-project">
         <h2 class="text-2xl font-bold mb-6 text-gray-900">Actualizar Proyecto</h2>
         <form @submit.prevent="updateProject">

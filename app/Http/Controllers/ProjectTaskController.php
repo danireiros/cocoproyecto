@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskFile;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ProjectTaskController extends Controller
 {
@@ -111,10 +112,13 @@ class ProjectTaskController extends Controller
 
     public function getAssignedTasks($userId)
     {
-        // Obtén las tareas asignadas al usuario
-        $tasks = Task::whereHas('users', function($query) use ($userId) {
-            $query->where('user_id', $userId);
-        })->get();
+        $tasks = DB::table('tasks')
+            ->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+            ->join('projects', 'tasks.project_id', '=', 'projects.id')
+            ->where('task_user.user_id', $userId)
+            ->select('tasks.*', 'projects.name as project_name', 'task_user.completed as delivered')
+            ->get()
+            ->groupBy('project_title');
 
         return response()->json($tasks);
     }
@@ -137,14 +141,24 @@ class ProjectTaskController extends Controller
             $file = $request->file('file');
             $filePath = $file->store('task_files', 'public');
 
-            // Guarda la ruta del archivo y el task_id en la base de datos
             $taskFile = new TaskFile();
             $taskFile->task_id = $taskId;
             $taskFile->url = $filePath;
             $taskFile->user_id = auth()->user()->id;
             $taskFile->save();
 
-            return response()->json(['message' => 'Archivo subido con éxito.', 'file_path' => $filePath]);
+            $affectedRows = DB::table('task_user')
+                          ->where('task_id', $taskId)
+                          ->where('user_id', $user->id)
+                          ->update(['completed' => true]);
+
+            if ($affectedRows) {
+                return response()->json(['message' => 'Tarea marcada como entragda con éxito'], 200);
+            } else {
+                return response()->json(['message' => 'Tarea actualizada y marcada como entregada'], 404);
+            }
+
+            //return response()->json(['message' => 'Archivo subido con éxito.', 'file_path' => $filePath]);
         }
 
         return response()->json(['message' => 'No se ha seleccionado ningún archivo.'], 400);

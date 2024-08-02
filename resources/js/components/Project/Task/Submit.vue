@@ -62,12 +62,11 @@
           });
 
           if (response.ok) {
-            this.statusMessage = 'Archivo subido con éxito.';
             this.selectedFile = null;
           } else {
-            this.errorMessage = 'Error al subir el archivo.';
             console.error('Error al subir archivo', await response.text());
           }
+          this.statusMessage = response.message;
         } catch (error) {
           this.errorMessage = 'Error al subir archivo.';
           console.error('Error al subir archivo', error);

@@ -1,13 +1,11 @@
 <template>
-    <div class="add-users-to-project max-w-4xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div class="add-users-to-project max-w-4xl mx-auto mt-2 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <h2 class="text-2xl font-bold mb-6 text-gray-900">Añadir Usuarios al Proyecto</h2>
 
-      <!-- User list -->
       <div v-if="users.length" class="space-y-4">
         <div v-for="user in users" :key="user.id" class="flex items-center justify-between p-2 bg-gray-100 border rounded-lg">
           <p class="font-semibold">{{ user.name }}</p>
 
-          <!-- Button state based on user's presence in the project -->
           <button
             v-if="!userInProject(user.id) && !addedUsers.includes(user.id)"
             @click="addUserToProject(user.id)"

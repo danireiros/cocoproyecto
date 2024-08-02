@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import myTasks from './components/UserTasks.vue';
 import Home from './components/Home.vue';
 
 import Login from './components/Login.vue';
@@ -25,8 +26,9 @@ import EditUserRole from './components/User/Edit.vue';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
+    { path: '/mytasks', component: myTasks, meta: { requiresAuth: true } },
     { path: '/login', component: Login },
-    { path: '/logout', component: Home, meta: { requiresAuth: true } },
+    { path: '/logout', component: myTasks, meta: { requiresAuth: true } },
     { path: '/register', component: Register },
     { path: '/email/verify/:id/:hash', component: EmailVerify, props: true },
     { path: '/password/forgot', component: ForgotPassword },

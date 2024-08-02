@@ -7,6 +7,9 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+
+    // to-do paginate a los usuarios en fetchusers
+
     /**
      * Fetch a list of users.
      *

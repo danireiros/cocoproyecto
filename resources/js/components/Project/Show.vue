@@ -1,5 +1,5 @@
 <template>
-    <div class="project-details max-w-4xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div class="project-details max-w-4xl mx-auto mt-2 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <h2 v-if="project" class="text-2xl font-bold mb-6 text-gray-900">Detalles del {{ project.name }}</h2>
 
       <div v-if="project">

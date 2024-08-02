@@ -1,5 +1,5 @@
 <template>
-    <div class="create-task max-w-4xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+    <div class="create-task max-w-4xl mx-auto mt-2 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <h2 class="text-2xl font-bold mb-6 text-gray-900">Crear Tarea</h2>
       <form @submit.prevent="createTask">
         <div class="mb-4">
