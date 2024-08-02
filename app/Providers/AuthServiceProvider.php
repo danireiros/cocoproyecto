@@ -10,6 +10,7 @@ use App\Notifications\VerifyEmail as VerifyEmailNotification;
 use App\Models\User;
 use App\Models\Project;
 use App\Policies\ProjectPolicy;
+use App\Policies\UserRolePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Project::class => ProjectPolicy::class,
+        User::class => UserRolePolicy::class,
     ];
 
     /**

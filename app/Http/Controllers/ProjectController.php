@@ -102,27 +102,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Fetch a list of users.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function fetchUsers()
-    {
-        $user = auth()->user();
-
-        if (!$user) {
-            return response()->json(['error' => 'No autenticado'], 401);
-        }
-
-        if (!$user->isAdmin()) {
-            return response()->json(['error' => 'No tienes permisos para acceder a esta información.'], 403);
-        }
-
-        $users = User::all();
-        return response()->json($users);
-    }
-
-    /**
      * Add users to project.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -12,13 +12,16 @@ import CreateProject from './components/Project/Create.vue';
 import ShowProject from './components/Project/Show.vue';
 import EditProject from './components/Project/Edit.vue';
 import AddUsersToProject from './components/Project/AddUsersToProject.vue';
-import EditUserRole from './components/Project/EditUserProjectRole.vue';
+import EditProjectUserRole from './components/Project/EditUserProjectRole.vue';
 
 import ProjectTasks from './components/Project/Task/Index.vue';
 import CreateTask from './components/Project/Task/Create.vue';
 import EditTask from './components/Project/Task/Edit.vue';
 import AddUsersToTasks from './components/Project/Task/AddUsersToTasks.vue';
 import SubmitTask from './components/Project/Task/Submit.vue';
+
+import Users from './components/User/Index.vue';
+import EditUserRole from './components/User/Edit.vue';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
@@ -49,7 +52,7 @@ const routes = [
     },
     {
         path: '/projects/:projectId/users/:userId/edit-role',
-        component: EditUserRole,
+        component: EditProjectUserRole,
         props: route => ({
           projectId: Number(route.params.projectId),
           userId: Number(route.params.userId)
@@ -104,7 +107,24 @@ const routes = [
         path: '/tasks/:taskId/submit',
         name: 'SubmitTask',
         component: SubmitTask,
-        props: true
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users',
+        name: 'Users',
+        component: Users,
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users/:userId/edit-role',
+        component: EditUserRole,
+        props: route => ({
+          projectId: Number(route.params.projectId),
+          userId: Number(route.params.userId)
+        }),
+        meta: { requiresAuth: true }
     },
 ];
 

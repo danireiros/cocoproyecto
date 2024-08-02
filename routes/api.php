@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-*/
-
 //Usuarios
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -46,26 +40,7 @@ Route::post('/password/reset', [PasswordResetController::class, 'reset'])->name(
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTaskController;
-
-/*
-Route::middleware('auth:api')->group(function () {
-    Route::get('/projects', [ProjectController::class, 'index']);
-    Route::post('/projects', [ProjectController::class, 'store']);
-    Route::get('/projects/{id}', [ProjectController::class, 'show']);
-    Route::put('/projects/{id}', [ProjectController::class, 'update']);
-    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
-
-    Route::post('/projects/{projectId}/add-users', [ProjectController::class, 'addUsers']);
-
-    Route::get('/users', [ProjectController::class, 'fetchUsers']);
-    Route::post('/projects/{projectId}/update-role', [ProjectController::class, 'updateUserRole']);
-    Route::get('/projects/{projectId}/users', [ProjectController::class, 'fetchAddedUsers']);
-
-    Route::get('/api/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'getUserRole']);
-    Route::put('/api/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'updateUserRole']);
-
-});
-*/
+use App\Http\Controllers\UserController;
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/projects', [ProjectController::class, 'index']);
@@ -74,7 +49,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/projects/{id}', [ProjectController::class, 'update']);
     Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
 
-    Route::get('/users', [ProjectController::class, 'fetchUsers']);
+    Route::get('/users', [UserController::class, 'fetchUsers']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+
     Route::post('/projects/{projectId}/add-users', [ProjectController::class, 'addUsers']);
     Route::get('/projects/{projectId}/users', [ProjectController::class, 'fetchAddedUsers']);
     Route::get('/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'getUserRole']);
@@ -94,5 +71,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/tasks/{taskId}/submit', [ProjectTaskController::class, 'submitFile']);
     Route::get('/tasks/{taskId}/files', [ProjectTaskController::class, 'getTaskFiles']);
+
+    Route::get('/users/{id}/role', [UserController::class, 'getRole']);
+    Route::put('/users/{id}/role', [UserController::class, 'updateRole']);
 });
 
