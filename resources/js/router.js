@@ -18,6 +18,7 @@ import ProjectTasks from './components/Project/Task/ProjectTask.vue';
 import CreateTask from './components/Project/Task/CreateTask.vue';
 import EditTask from './components/Project/Task/EditTask.vue';
 import AddUsersToTasks from './components/Project/Task/AddUsersToTasks.vue';
+import SubmitTask from './components/Project/Task/SubmitTask.vue';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
@@ -72,7 +73,8 @@ const routes = [
             projectId: parseInt(route.params.projectId),
         })
     },
-    { path: '/projects/:projectId/tasks/:taskId/edit',
+    {
+        path: '/projects/:projectId/tasks/:taskId/edit',
         component: EditTask,
         props: route => ({
             projectId: Number(route.params.projectId),
@@ -88,6 +90,21 @@ const routes = [
             taskId: Number(route.params.taskId)
         }),
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/projects/tasks/:taskId/submit',
+        component: SubmitTask,
+        props: route => ({
+            taskId: Number(route.params.taskId),
+            userId: Number(route.params.userId)
+        }),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/tasks/:taskId/submit',
+        name: 'SubmitTask',
+        component: SubmitTask,
+        props: true
     },
 ];
 

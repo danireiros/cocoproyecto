@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskFile;
 use App\Models\User;
 
 class ProjectTaskController extends Controller
@@ -106,5 +107,64 @@ class ProjectTaskController extends Controller
         $task = Task::where('project_id', $projectId)->findOrFail($taskId);
         $users = $task->users;
         return response()->json($users);
+    }
+
+    public function getAssignedTasks($userId)
+    {
+        // Obtén las tareas asignadas al usuario
+        $tasks = Task::whereHas('users', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
+
+        return response()->json($tasks);
+    }
+
+    public function submitFile(Request $request, $taskId)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+        $user = $request->user();
+
+        // Verifica si el usuario está asignado a la tarea
+        if (!$task->users()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'No tienes permiso para subir archivos para esta tarea.'], 403);
+        }
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filePath = $file->store('task_files', 'public');
+
+            // Guarda la ruta del archivo y el task_id en la base de datos
+            $taskFile = new TaskFile();
+            $taskFile->task_id = $taskId;
+            $taskFile->url = $filePath;
+            $taskFile->user_id = auth()->user()->id;
+            $taskFile->save();
+
+            return response()->json(['message' => 'Archivo subido con éxito.', 'file_path' => $filePath]);
+        }
+
+        return response()->json(['message' => 'No se ha seleccionado ningún archivo.'], 400);
+    }
+
+    public function getTaskFiles($taskId)
+    {
+        $files = TaskFile::where('task_id', $taskId)
+            ->with('user')
+            ->get()
+            ->map(function ($file) {
+                return [
+                    'id' => $file->id,
+                    'file_name' => basename($file->file_path),
+                    'url' => $file->url,
+                    'user_name' => $file->user ? $file->user->name : 'Desconocido',
+                    'uploaded_at' => $file->created_at->format('d-m-Y H:i:s'),
+                ];
+            });
+
+        return response()->json($files);
     }
 }

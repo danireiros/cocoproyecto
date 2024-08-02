@@ -16,6 +16,9 @@
         "vite": "^5.3.5"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/vue3": "^6.1.15",
         "vue": "^3.4.35",
         "vue-router": "^4.4.1"
     }

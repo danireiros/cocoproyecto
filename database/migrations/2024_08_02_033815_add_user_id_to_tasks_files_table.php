@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks_files', function (Blueprint $table) {
-            $table->id();
-
-            $table->unsignedBigInteger('task_id');
-            $table->string('url');
-
-            $table->timestamps();
+        Schema::table('tasks_files', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->after('task_id');
         });
     }
 
@@ -26,6 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks_files');
+        Schema::table('tasks_files', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
     }
 };

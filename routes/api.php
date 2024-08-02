@@ -89,5 +89,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/projects/{projectId}/tasks/{taskId}/assign', [ProjectTaskController::class, 'assignUserToTask']);
     Route::get('/projects/{projectId}/tasks/{taskId}/users', [ProjectTaskController::class, 'getTaskUsers']);
+
+    Route::get('/users/{userId}/assigned-tasks', [ProjectTaskController::class, 'getAssignedTasks']);
+
+    Route::post('/tasks/{taskId}/submit', [ProjectTaskController::class, 'submitFile']);
+    Route::get('/tasks/{taskId}/files', [ProjectTaskController::class, 'getTaskFiles']);
 });
 
