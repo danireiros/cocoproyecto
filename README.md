@@ -68,9 +68,13 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu sistema:
 
    `php artisan migrate`
 
-   Si el proyecto incluye seeders, puedes ejecutarlos también:
+   El proyecto incluye seeders para usuarios, puedes ejecutarlos también:
 
    `php artisan db:seed`
+
+   Con el administrador podra crear proyectos y asignar roles a usuarios 
+   email: admin@gmail.com
+   contraseña: password
 
 8. **Inicia el Servidor**
 

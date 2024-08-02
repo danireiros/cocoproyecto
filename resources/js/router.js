@@ -7,18 +7,18 @@ import EmailVerify from './components/EmailVerify.vue';
 import ForgotPassword from './components/ForgotPassword.vue';
 import ResetPassword from './components/ResetPassword.vue';
 
-import Projects from './components/Project/Projects.vue';
-import CreateProject from './components/Project/CreateProject.vue';
-import ShowProject from './components/Project/ShowProject.vue';
-import EditProject from './components/Project/EditProject.vue';
+import Projects from './components/Project/Index.vue';
+import CreateProject from './components/Project/Create.vue';
+import ShowProject from './components/Project/Show.vue';
+import EditProject from './components/Project/Edit.vue';
 import AddUsersToProject from './components/Project/AddUsersToProject.vue';
-import EditUserRole from './components/Project/EditUserRole.vue';
+import EditUserRole from './components/Project/EditUserProjectRole.vue';
 
-import ProjectTasks from './components/Project/Task/ProjectTask.vue';
-import CreateTask from './components/Project/Task/CreateTask.vue';
-import EditTask from './components/Project/Task/EditTask.vue';
+import ProjectTasks from './components/Project/Task/Index.vue';
+import CreateTask from './components/Project/Task/Create.vue';
+import EditTask from './components/Project/Task/Edit.vue';
 import AddUsersToTasks from './components/Project/Task/AddUsersToTasks.vue';
-import SubmitTask from './components/Project/Task/SubmitTask.vue';
+import SubmitTask from './components/Project/Task/Submit.vue';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
