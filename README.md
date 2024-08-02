@@ -1,66 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación del Proyecto Laravel con Laragon</title>
+</head>
+<body>
+    <h1>Instalación del Proyecto Laravel con Laragon</h1>
+    <p>Este archivo te guiará a través de los pasos necesarios para instalar y configurar el proyecto Laravel disponible en el repositorio <a href="https://github.com/danireiros/cocoproyecto.git">cocoproyecto</a> utilizando Laragon.</p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+    <h2>Requisitos</h2>
+    <p>Antes de comenzar, asegúrate de tener lo siguiente instalado en tu sistema:</p>
+    <ul>
+        <li><a href="https://laragon.org/">Laragon</a>: Un entorno de desarrollo local para PHP, MySQL, y otros servicios.</li>
+        <li><a href="https://git-scm.com/">Git</a>: Para clonar el repositorio.</li>
+    </ul>
 
-## About Laravel
+    <h2>Pasos para la Instalación</h2>
+    <ol>
+        <li><strong>Clona el Repositorio</strong>
+            <p>Abre una terminal y ejecuta el siguiente comando para clonar el repositorio del proyecto:</p>
+            <pre><code>git clone https://github.com/danireiros/cocoproyecto.git</code></pre>
+            <p>Esto descargará el proyecto en un directorio llamado <code>cocoproyecto</code>.</p>
+        </li>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+        <li><strong>Configura Laragon</strong>
+            <ol>
+                <li>Abre Laragon.</li>
+                <li>En la ventana de Laragon, haz clic en el botón <strong>Menu</strong> (generalmente en la parte superior derecha) y selecciona <strong>www</strong> para abrir el directorio <code>www</code> de Laragon.</li>
+                <li>Mueve o copia el directorio <code>cocoproyecto</code> al directorio <code>www</code> de Laragon.</li>
+            </ol>
+        </li>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+        <li><strong>Configura el Archivo <code>.env</code></strong>
+            <ol>
+                <li>Abre el directorio del proyecto (<code>cocoproyecto</code>) en un editor de texto.</li>
+                <li>Renombra el archivo <code>.env.example</code> a <code>.env</code>.</li>
+                <li>Abre el archivo <code>.env</code> y configura la conexión a la base de datos. Asegúrate de que los detalles coincidan con tu configuración de Laragon:
+                    <pre><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cocoproyecto
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+                </li>
+            </ol>
+        </li>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+        <li><strong>Instala las Dependencias del Proyecto</strong>
+            <ol>
+                <li>Abre una terminal y navega al directorio del proyecto (<code>cocoproyecto</code>):
+                    <pre><code>cd www/cocoproyecto</code></pre>
+                </li>
+                <li>Ejecuta el siguiente comando para instalar las dependencias del proyecto utilizando Composer:
+                    <pre><code>composer install</code></pre>
+                </li>
+            </ol>
+        </li>
 
-## Learning Laravel
+        <li><strong>Genera la Clave de Aplicación</strong>
+            <p>Ejecuta el siguiente comando para generar una clave de aplicación:
+                <pre><code>php artisan key:generate</code></pre>
+            </p>
+        </li>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+        <li><strong>Configura la Base de Datos</strong>
+            <p>Asegúrate de que la base de datos <code>cocoproyecto</code> exista en tu entorno de Laragon. Puedes crearla utilizando phpMyAdmin o mediante la línea de comandos:
+                <pre><code>mysql -u root -e "CREATE DATABASE cocoproyecto;"</code></pre>
+            </p>
+        </li>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+        <li><strong>Ejecuta las Migraciones y Seeders</strong>
+            <p>Ejecuta las migraciones para crear las tablas necesarias en la base de datos:
+                <pre><code>php artisan migrate</code></pre>
+            </p>
+            <p>Si el proyecto incluye seeders, puedes ejecutarlos también:
+                <pre><code>php artisan db:seed</code></pre>
+            </p>
+        </li>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        <li><strong>Inicia el Servidor</strong>
+            <ol>
+                <li>En Laragon, haz clic en el botón <strong>Start All</strong> para iniciar los servicios de Apache y MySQL.</li>
+                <li>Asegúrate de que el proyecto esté accesible en tu navegador visitando <a href="http://cocoproyecto.test">http://cocoproyecto.test</a> o <a href="http://localhost/cocoproyecto/public">http://localhost/cocoproyecto/public</a>.</li>
+            </ol>
+        </li>
+    </ol>
 
-## Laravel Sponsors
+    <h2>Troubleshooting</h2>
+    <ul>
+        <li><strong>Error de Conexión a la Base de Datos</strong>: Asegúrate de que la configuración en el archivo <code>.env</code> es correcta y que la base de datos <code>cocoproyecto</code> existe.</li>
+        <li><strong>Problemas con Dependencias</strong>: Si encuentras problemas durante la instalación de dependencias con Composer, intenta ejecutar <code>composer update</code> o <code>composer install</code> nuevamente.</li>
+    </ul>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    <h2>Recursos Adicionales</h2>
+    <ul>
+        <li><a href="https://laravel.com/docs">Documentación de Laravel</a></li>
+        <li><a href="https://laragon.org/docs/">Documentación de Laragon</a></li>
+        <li><a href="https://getcomposer.org/">Composer</a></li>
+    </ul>
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    <p>¡Listo! Ahora deberías tener tu proyecto Laravel funcionando localmente en Laragon. Si tienes alguna pregunta o encuentras problemas, no dudes en consultar la documentación o buscar ayuda en la comunidad.</p>
+</body>
+</html>
