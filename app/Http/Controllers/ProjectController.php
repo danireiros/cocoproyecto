@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
+    // to-do pasar a tipo resource
+
     /**
      * Display a listing of the projects.
      *
@@ -53,12 +55,6 @@ class ProjectController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $user = auth()->user();
-
-        if (!$user->isAdmin()) {
-            return response()->json(['error' => 'No autorizado'], 403);
         }
 
         $project = Project::create([

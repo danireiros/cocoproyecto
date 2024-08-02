@@ -89,6 +89,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function tasks()
     {
-        //return $this->hasMany(Task::class, 'assigned_to');
+        return $this->belongsToMany(Task::class, 'task_user');
     }
 }

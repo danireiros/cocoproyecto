@@ -3,7 +3,6 @@
       <h2 v-if="project" class="text-2xl font-bold mb-6 text-gray-900">Detalles del {{ project.name }}</h2>
 
       <div v-if="project">
-        <!-- Project Details -->
         <div class="mb-6">
           <p class="font-bold">{{ project.name }}</p>
           <p>{{ project.description }}</p>
@@ -11,21 +10,27 @@
           <p class="text-gray-600">{{ project.creator.name }}</p>
         </div>
 
-        <!-- Show edit and add users buttons only for the project creator or users with admin/project_manager role -->
         <div v-if="canEditProject" class="flex gap-4">
           <router-link
-            :to="`/projects/edit/${project.id}`"
-            class="py-2 px-4 bg-yellow-500 text-dark font-semibold rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-          >
-            Editar
+                :to="`/projects/edit/${project.id}`"
+                class="py-2 px-4 bg-yellow-500 text-dark font-semibold rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+            >
+                Editar
           </router-link>
 
           <router-link
-            :to="`/projects/add-users/${project.id}`"
-            class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Usuarios
+                :to="`/projects/add-users/${project.id}`"
+                class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+                Usuarios
           </router-link>
+
+          <router-link
+            :to="`/projects/${project.id}/tasks`"
+            class="py-2 px-4 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+            Tareas
+        </router-link>
         </div>
       </div>
       <p v-else class="text-gray-700">Cargando detalles del proyecto...</p>

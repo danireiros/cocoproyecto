@@ -45,6 +45,7 @@ Route::get('/password/resetform/{token}', [PasswordResetController::class, 'show
 Route::post('/password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTaskController;
 
 /*
 Route::middleware('auth:api')->group(function () {
@@ -78,5 +79,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/projects/{projectId}/users', [ProjectController::class, 'fetchAddedUsers']);
     Route::get('/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'getUserRole']);
     Route::put('/projects/{projectId}/users/{userId}/role', [ProjectController::class, 'updateUserRole']);
+
+    Route::get('/projects/{projectId}/tasks', [ProjectTaskController::class, 'index']);
+    Route::post('/projects/{projectId}/tasks', [ProjectTaskController::class, 'store']);
+    Route::get('/projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'show']);
+    Route::put('/projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update']);
+    Route::delete('/projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy']);
+    Route::get('/projects/{projectId}/user-role/{userId}', [ProjectController::class, 'getUserRole']);
+
+    Route::post('/projects/{projectId}/tasks/{taskId}/assign', [ProjectTaskController::class, 'assignUserToTask']);
+    Route::get('/projects/{projectId}/tasks/{taskId}/users', [ProjectTaskController::class, 'getTaskUsers']);
 });
 

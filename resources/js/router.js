@@ -14,6 +14,11 @@ import EditProject from './components/Project/EditProject.vue';
 import AddUsersToProject from './components/Project/AddUsersToProject.vue';
 import EditUserRole from './components/Project/EditUserRole.vue';
 
+import ProjectTasks from './components/Project/Task/ProjectTask.vue';
+import CreateTask from './components/Project/Task/CreateTask.vue';
+import EditTask from './components/Project/Task/EditTask.vue';
+import AddUsersToTasks from './components/Project/Task/AddUsersToTasks.vue';
+
 const routes = [
     { path: '/', component: Home, meta: { requiresAuth: true } },
     { path: '/login', component: Login },
@@ -41,7 +46,6 @@ const routes = [
         props: route => ({ projectId: Number(route.params.id) }),
         meta: { requiresAuth: true }
     },
-    //{ path: '/projects/:projectId/users/:userId/edit-role', component: EditUserRole, meta: { requiresAuth: true } },
     {
         path: '/projects/:projectId/users/:userId/edit-role',
         component: EditUserRole,
@@ -50,7 +54,41 @@ const routes = [
           userId: Number(route.params.userId)
         }),
         meta: { requiresAuth: true }
-    }
+    },
+    {
+        path: '/projects/:projectId/tasks',
+        component: ProjectTasks,
+        props: route => ({
+          projectId: Number(route.params.projectId),
+          userId: Number(route.params.userId)
+        }),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/projects/:projectId/tasks/create',
+        name: 'CreateTask',
+        component: CreateTask,
+        props: route => ({
+            projectId: parseInt(route.params.projectId),
+        })
+    },
+    { path: '/projects/:projectId/tasks/:taskId/edit',
+        component: EditTask,
+        props: route => ({
+            projectId: Number(route.params.projectId),
+            taskId: Number(route.params.taskId)
+        }),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/projects/:projectId/tasks/:taskId/assign-members',
+        component: AddUsersToTasks,
+        props: route => ({
+            projectId: Number(route.params.projectId),
+            taskId: Number(route.params.taskId)
+        }),
+        meta: { requiresAuth: true }
+    },
 ];
 
 const router = createRouter({
