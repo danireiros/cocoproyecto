@@ -18,13 +18,6 @@
           Subir Archivo
         </button>
       </form>
-
-      <div v-if="statusMessage" class="p-4 mt-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-        {{ statusMessage }}
-      </div>
-      <div v-if="errorMessage" class="p-4 mt-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-        {{ errorMessage }}
-      </div>
     </div>
   </template>
 
@@ -34,8 +27,6 @@
     data() {
       return {
         selectedFile: null,
-        statusMessage: null,
-        errorMessage: null
       };
     },
     methods: {
@@ -44,7 +35,6 @@
       },
       async submitFile() {
         if (!this.selectedFile) {
-          this.errorMessage = 'Por favor, selecciona un archivo.';
           return;
         }
 
@@ -63,12 +53,12 @@
 
           if (response.ok) {
             this.selectedFile = null;
+            alert('Archivo subido con exito');
           } else {
             console.error('Error al subir archivo', await response.text());
           }
-          this.statusMessage = response.message;
         } catch (error) {
-          this.errorMessage = 'Error al subir archivo.';
+          alert('Error al subir archivo.');
           console.error('Error al subir archivo', error);
         }
       },

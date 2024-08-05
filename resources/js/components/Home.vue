@@ -47,6 +47,7 @@
       return {
         isAdmin: false,
         username: '',
+        message: '',
       };
     },
     created() {

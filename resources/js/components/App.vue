@@ -43,7 +43,7 @@
               @click="logout"
               class="py-2 px-4 bg-red-100 text-dark font-semibold rounded-md hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
-              Desconectar
+              Desconectar {{ user.name }}
             </button>
           </div>
           <div v-else class="flex flex-col sm:flex-row sm:space-x-4">
@@ -65,6 +65,11 @@
 
       <!-- Main Content -->
       <div class="flex-grow p-4">
+
+        <div v-if="message" class="p-4 mt-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            {{ message }}
+        </div>
+
         <router-view></router-view>
       </div>
 
@@ -152,7 +157,3 @@
     }
   };
   </script>
-
-  <style scoped>
-  /* Add any additional styles here if needed */
-  </style>

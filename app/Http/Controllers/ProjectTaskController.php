@@ -229,7 +229,7 @@ class ProjectTaskController extends Controller
 
                 return response()->json(['message' => 'Tarea marcada como entregada con éxito'], 200);
             } else {
-                return response()->json(['message' => 'Tarea actualizada y marcada como entregada'], 404);
+                return response()->json(['message' => 'Tarea actualizada y marcada como entregada'], 200);
             }
         }
 
