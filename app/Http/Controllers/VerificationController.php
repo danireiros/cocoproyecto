@@ -11,7 +11,15 @@ use Illuminate\Support\Facades\Hash;
 
 class VerificationController extends Controller
 {
-    public function verify(Request $request, $id, $hash)
+    /**
+     * Verify the user's email address.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id  The ID of the user to verify.
+     * @param  string  $hash  The email verification hash.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function verify(Request $request, int $id, string $hash)
     {
         $user = User::find($id);
 
@@ -28,6 +36,12 @@ class VerificationController extends Controller
         return redirect('/?status=Tu email ha sido verificado.');
     }
 
+    /**
+     * Resend the email verification link to the user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {

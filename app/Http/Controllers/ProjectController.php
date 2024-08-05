@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
-    // to-do pasar a tipo resource
-
     /**
      * Display a listing of the projects.
      *
@@ -62,6 +60,13 @@ class ProjectController extends Controller
             'description' => $request->input('description'),
             'created_by' => auth()->user()->id,
         ]);
+
+        // TODO - enviar email a Admin y a usuarios implicados
+        $emails = ['danireiros@gmail.com'];
+        $content = "Nuevo proyecto (".$request->input('name').") creado";
+        $subject = "Nuevo proyecto (".$request->input('name').") creado";
+        $mailController = new SendMailController();
+        $mailController->sendEmails($emails, $content, $subject);
 
         return response()->json(['status' => 'Proyecto creado con éxito.', 'project' => $project], 201);
     }

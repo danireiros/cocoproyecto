@@ -29,6 +29,8 @@ class ProjectTaskController extends Controller
     /**
      * Display task to edit.
      *
+     * @param  int  $project_id
+     * @param  int  $task_id
      * @return \Illuminate\Http\Response
      */
     public function show($project_id, $task_id)
@@ -44,6 +46,12 @@ class ProjectTaskController extends Controller
         }
     }
 
+    /**
+     * Store a newly created task in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $projectId = $request->input('project_id');
@@ -61,9 +69,25 @@ class ProjectTaskController extends Controller
         ]);
 
         $task = Task::create($validated);
+
+        // TODO - enviar email basico a Admin y a usuarios con la tarea
+        $emails = ['danireiros@gmail.com'];
+        $content = "Nueva tarea " . $request->input('title');
+        $subject = "Nueva tarea " . $request->input('title');
+        $mailController = new SendMailController();
+        $mailController->sendEmails($emails, $content, $subject);
+
         return response()->json($task, 201);
     }
 
+    /**
+     * Update the specified task in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $project_id
+     * @param  int  $task_id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $project_id, $task_id)
     {
         $task = Task::findOrFail($task_id);
@@ -83,6 +107,13 @@ class ProjectTaskController extends Controller
         return response()->json($task);
     }
 
+    /**
+     * Remove the specified task from storage.
+     *
+     * @param  int  $project_id
+     * @param  int  $task_id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($project_id, $task_id)
     {
         $project = Project::findOrFail($project_id);
@@ -94,15 +125,38 @@ class ProjectTaskController extends Controller
         return response()->json(['message' => 'Tarea eliminada con éxito.']);
     }
 
+    /**
+     * Assign a user to a task.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $projectId
+     * @param  int  $taskId
+     * @return \Illuminate\Http\Response
+     */
     public function assignUserToTask(Request $request, $projectId, $taskId)
     {
         $task = Task::where('project_id', $projectId)->findOrFail($taskId);
         $user = User::findOrFail($request->input('user_id'));
 
         $task->users()->attach($user);
+
+        // TODO - enviar email a Admin y a usuarios implicados
+        $emails = [$user->email, 'danireiros@gmail.com'];
+        $content = "Tarea ($task->title) asignada para " . $user->name;
+        $subject = "Tarea ($task->title) asignada para " . $user->name;
+        $mailController = new SendMailController();
+        $mailController->sendEmails($emails, $content, $subject);
+
         return response()->json(['message' => 'Usuario asignado con éxito'], 200);
     }
 
+    /**
+     * Get all users assigned to a task.
+     *
+     * @param  int  $projectId
+     * @param  int  $taskId
+     * @return \Illuminate\Http\Response
+     */
     public function getTaskUsers($projectId, $taskId)
     {
         $task = Task::where('project_id', $projectId)->findOrFail($taskId);
@@ -110,6 +164,12 @@ class ProjectTaskController extends Controller
         return response()->json($users);
     }
 
+    /**
+     * Get all tasks assigned to a user.
+     *
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
     public function getAssignedTasks($userId)
     {
         $tasks = DB::table('tasks')
@@ -118,11 +178,18 @@ class ProjectTaskController extends Controller
             ->where('task_user.user_id', $userId)
             ->select('tasks.*', 'projects.name as project_name', 'task_user.completed as delivered')
             ->get()
-            ->groupBy('project_title');
+            ->groupBy('project_name');
 
         return response()->json($tasks);
     }
 
+    /**
+     * Submit a file for a task.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $taskId
+     * @return \Illuminate\Http\Response
+     */
     public function submitFile(Request $request, $taskId)
     {
         $request->validate([
@@ -132,7 +199,6 @@ class ProjectTaskController extends Controller
         $task = Task::findOrFail($taskId);
         $user = $request->user();
 
-        // Verifica si el usuario está asignado a la tarea
         if (!$task->users()->where('user_id', $user->id)->exists()) {
             return response()->json(['message' => 'No tienes permiso para subir archivos para esta tarea.'], 403);
         }
@@ -153,17 +219,29 @@ class ProjectTaskController extends Controller
                           ->update(['completed' => true]);
 
             if ($affectedRows) {
-                return response()->json(['message' => 'Tarea marcada como entragda con éxito'], 200);
+
+                // TODO - enviar email a Admin y a usuarios implicados
+                $emails = [$user->email, 'danireiros@gmail.com'];
+                $content = "Tarea ($task->title) entregada por " . $user->name;
+                $subject = "Tarea ($task->title) entregada por " . $user->name;
+                $mailController = new SendMailController();
+                $mailController->sendEmails($emails, $content, $subject);
+
+                return response()->json(['message' => 'Tarea marcada como entregada con éxito'], 200);
             } else {
                 return response()->json(['message' => 'Tarea actualizada y marcada como entregada'], 404);
             }
-
-            //return response()->json(['message' => 'Archivo subido con éxito.', 'file_path' => $filePath]);
         }
 
         return response()->json(['message' => 'No se ha seleccionado ningún archivo.'], 400);
     }
 
+    /**
+     * Get all files for a task.
+     *
+     * @param  int  $taskId
+     * @return \Illuminate\Http\Response
+     */
     public function getTaskFiles($taskId)
     {
         $files = TaskFile::where('task_id', $taskId)

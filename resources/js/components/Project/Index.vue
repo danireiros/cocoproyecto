@@ -2,7 +2,6 @@
     <div class="projects-container max-w-4xl mx-auto mt-2 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
       <h2 class="text-2xl font-bold mb-6 text-gray-900">Gestión de Proyectos</h2>
 
-      <!-- Button to create new project, visible to admin or project manager -->
       <div v-if="isAdminOrProjectManager" class="mb-4">
         <router-link
           to="/projects/create"
@@ -12,7 +11,6 @@
         </router-link>
       </div>
 
-      <!-- Table for displaying projects -->
       <div v-if="projects.length" class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
